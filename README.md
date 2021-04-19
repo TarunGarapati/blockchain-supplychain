@@ -1,2 +1,9 @@
 # blockchain-supplychain
+In this project, we considered a dyadic supply chain which consists of Supplier and Buyer. Supplier delivers the products to buyer. In order to reach the product from production plant (supplier’s facility) to the destination (buyer’s warehouse), truck carrying the shipment has to pass through three checkpoints. To deliver the products on time; truck has to cross each checkpoint at a predefined point of time. The chance of delay in delivery can be detected by checking whether the shipment is crossing the checkpoints on the predefined time or not. In order to collect the real-time location of shipment, the web application is integrated with Google Maps - Java Script API. Location data from is stored in blockchain with timestamps. The smart contract(Product.sol) deployed in the blockchain uses this data to notify important information to the entities regarding the chance of delay in shipment.
+
+Sequence of Operations involved in smart contract:
+Supplier creates a contract by creating the product, i.e by giving product details and predetermined times to reach checkpoints as input. Supplier asks permission to the buyer (to start shipment). Buyer grants permission to supplier (to start shipment). IoT tracks the location data and feed this to blockchain. Here presence of IoT can be assumed, i.e, data is uploaded manually through an interface. Buyer acknowledges once the shipment arrives. Supplier submits the bill. Buyer pays the bill. Supplier acknowledges the payment. Contract ends.
+
+Penalty is calculated as:
+If the truck has not reached the checkpoint-1 by the time it has to be at checkpoint-2, then the delay is 1 day If the truck has not reached the checkpoint-1 by the time it has to be at checkpoint-3, then the delay is 2 days and so on.. Penalty will be 10% of total cost if there is 1 day delay, 20% if there is 2 days delay, 30% if there is 3 days delay.
  
