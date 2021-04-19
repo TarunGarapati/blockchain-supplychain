@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Product Delivery</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+   <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <style type="text/css">
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+       h1{text-align: center;}
+      #map {
+        height: 400px;
+      }
+
+      /* Optional: Makes the sample page fill the window. */
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      .custom-map-control-button {
+        appearance: button;
+        background-color: #fff;
+        border: 0;
+        border-radius: 2px;
+        box-shadow: 0 1px 4px -1px rgba(0, 0, 0, 0.3);
+        cursor: pointer;
+        margin: 10px;
+        padding: 0 0.5em;
+        height: 40px;
+        font: 400 18px Roboto, Arial, sans-serif;
+        overflow: hidden;
+      }
+      .custom-map-control-button:hover {
+        background: #ebebeb;
+      }
+    </style>
+    <script>
+      // Note: This example requires that you consent to location sharing when
+      // prompted by your browser. If you see the error "The Geolocation service
+      // failed.", it means you probably did not give permission for the browser to
+      // locate you.
+      let map, infoWindow;
+
+      function initMap() {
+        map = new google.maps.Map(document.getElementById("map"), {
+          center: { lat: -34.397, lng: 150.644 },
+          zoom: 11,
+        });
+        infoWindow = new google.maps.InfoWindow();
+        const locationButton = document.createElement("button");
+        locationButton.textContent = "Pan to Current Location";
+        locationButton.classList.add("custom-map-control-button");
+        map.controls[google.maps.ControlPosition.TOP_CENTER].push(
+          locationButton
+        );
+        locationButton.addEventListener("click", () => {
+          // Try HTML5 geolocation.
+          if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+              (position) => {
+                const pos = {
+                  lat: position.coords.latitude,
+                  lng: position.coords.longitude,
+                };
+                infoWindow.setPosition(pos);
+                infoWindow.setContent("Location found.");
+                infoWindow.open(map);
+                map.setCenter(pos);
+              },
+              () => {
+                handleLocationError(true, infoWindow, map.getCenter());
+              }
+            );
+          } else {
+            // Browser doesn't support Geolocation
+            handleLocationError(false, infoWindow, map.getCenter());
+          }
+        });
+      }
+
+      function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+        infoWindow.setPosition(pos);
+        infoWindow.setContent(
+          browserHasGeolocation
+            ? "Error: The Geolocation service failed."
+            : "Error: Your browser doesn't support geolocation."
+        );
+        infoWindow.open(map);
+      }
+    </script>
+</head>
+
+
+
+<body>
+<h1>Product Delivery</h1>
+<div class="container">
+  <div id="loader">
+          <p class="text-center">Loading....</p>
+          </div>
+          <div id="content">
+              <h2>Supplier</h2>
+  <div class="panel-group" id="accordion">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">Create Product</a>
+        </h4>
+      </div>
+      <div id="collapse1" class="panel-collapse collapse">
+        <div class="panel-body">
+         <form name = "myForm" onsubmit="App.createProduct()">
+              <label for="buyerID" class="col-sm-2 control-label">Buyer ID: </label>
+              <input type="text" class="form-control" id="buyerID" name="buyerID"> <br>
+              <label for="pname" class="col-sm-2 control-label">Product Name: </label>
+              <input type="text" class="form-control" id="pname" name="pname"> <br>    
+              <label for="quantity" class="col-sm-2 control-label">Quantity:</label>
+              <input type="number" class="form-control" id="quantity" name="quantity" min="1" required> <br>
+              <label for="endTime" class="col-sm-2 control-label">End Time: </label>
+              <input type="number" class="form-control" id="endTime" name="endTime" min="1" required> <br>
+              <label for="price" class="col-sm-2 control-label">Price: </label>
+              <input type="number" class="form-control" id="price" name="price" min="1" required> <br>
+              <label for="time1" class="col-sm-2 control-label">Time1: </label>
+              <input type="number" class="form-control" id="time1" name="time1" min="1" required> <br>
+              <label for="time2" class="col-sm-2 control-label">Time2: </label>
+              <input type="number" class="form-control" id="time2" name="time2" min="1" required> <br>
+              <label for="time3" class="col-sm-2 control-label">Time3: </label>
+              <input type="number" class="form-control" id="time3" name="time3" min="1" required> <br>
+
+              <button type="submit" class="btn btn-primary">ADD</button>
+              <hr>
+            </form>
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">Ask Permission</a>
+        </h4>
+      </div>
+      <div id="collapse2" class="panel-collapse collapse">
+        <div class="panel-body">
+        <form onsubmit="App.askPermission()">
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <hr>
+                </form>
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">Enter IoT_1</a>
+        </h4>
+      </div>
+      <div id="collapse3" class="panel-collapse collapse">
+        <div class="panel-body">
+        <form onsubmit="App.loc_1()">
+                 <button type="submit" class="btn btn-primary">Enter Location1</button>
+                <hr>
+                </form>
+        <form onsubmit="App.IoT_1()">
+                 <button type="submit" class="btn btn-primary">Submit</button>
+                <hr>
+                </form>
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" data-parent="#accordion" href="#collapse4">Enter IoT_2</a>
+        </h4>
+      </div>
+      <div id="collapse4" class="panel-collapse collapse">
+        <div class="panel-body">
+        <form onsubmit="App.loc_2()">
+                 <button type="submit" class="btn btn-primary">Enter Location2</button>
+                <hr>
+                </form>
+        <form onsubmit="App.IoT_2()">
+              <button type="submit" class="btn btn-primary">Submit</button>
+              <hr>
+            </form>
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" data-parent="#accordion" href="#collapse5">Enter IoT_3</a>
+        </h4>
+      </div>
+      <div id="collapse5" class="panel-collapse collapse">
+        <div class="panel-body">
+        <form onsubmit="App.loc_3()">
+                 <button type="submit" class="btn btn-primary">Enter Location3</button>
+                <hr>
+                </form>
+        <form onsubmit="App.IoT_3()">
+              <button type="submit" class="btn btn-primary">Submit</button>
+              <hr>
+            </form>
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" data-parent="#accordion" href="#collapse6">Submit Bill</a>
+        </h4>
+      </div>
+      <div id="collapse6" class="panel-collapse collapse">
+        <div class="panel-body">
+         <form onsubmit="App.submitBill()">
+              <button type="submit" class="btn btn-primary">Submit</button>
+              <hr>
+            </form>
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" data-parent="#accordion" href="#collapse7"> Acknowledge Payment</a>
+        </h4>
+      </div>
+      <div id="collapse7" class="panel-collapse collapse">
+        <div class="panel-body">
+         <form onsubmit="App.acknowledgePayment()">
+              <button type="submit" class="btn btn-primary">Payment Received</button>
+              <hr>
+            </form>
+        </div>
+      </div>
+    </div>
+    
+    <h2> Buyer </h2>
+    <hr>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" data-parent="#accordion" href="#collapse8">Grant Permission</a>
+        </h4>
+      </div>
+      <div id="collapse8" class="panel-collapse collapse">
+        <div class="panel-body">
+        <form onsubmit="App.grantPermission()">
+              <button type="submit" class="btn btn-primary">Deliver Product</button>
+              <hr>
+            </form> 
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" data-parent="#accordion" href="#collapse9">Acknowledge Shipment</a>
+        </h4>
+      </div>
+      <div id="collapse9" class="panel-collapse collapse">
+        <div class="panel-body">
+         <form onsubmit="App.acknowledgeShipment()">
+              <button type="submit" class="btn btn-primary">Shipment Received</button>
+              <hr>
+            </form>
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" data-parent="#accordion" href="#collapse10">Make Payment</a>
+        </h4>
+      </div>
+      <div id="collapse10" class="panel-collapse collapse">
+        <div class="panel-body">
+         <form onsubmit="App.makePayment()">
+              <button type="submit" class="btn btn-primary">Pay</button>
+              <hr>
+            </form>
+        </div>
+      </div>
+    </div>
+    
+    
+  </div> 
+  <div class="jumbotron">
+  <p id="accountAddress" class="text-center"></p>
+              <p id="product" class="text-center"></p>
+              <p id="message" class="text-center"></p>
+              <p id="bill" class="text-center"></p>
+              <p id="state" class="text-center"></p>
+              <p id="lat1" class="text-center"></p>
+              <p id="long1" class="text-center"></p>
+              <p id="lat2" class="text-center"></p>
+              <p id="long2" class="text-center"></p>
+              <p id="lat3" class="text-center"></p>
+              <p id="long3" class="text-center"></p>
+              
+              <!--Google map-->
+<div id="map-container-google-2" class="z-depth-1-half map-container" style="height: 500px">
+  <iframe src="https://maps.google.com/maps?q=chicago&t=&z=13&ie=UTF8&iwloc=&output=embed" frameborder="0"
+    style="border:0" allowfullscreen></iframe>
+</div>
+
+<!--Google Maps-->
+
+  </div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/web3.min.js"></script>
+    <script src="js/truffle-contract.js"></script>
+    <script src="js/app.js"></script>
+    
+</div>
+</div>
+    <div id="map"></div>
+    <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBkKk29WxMr6ow1xHCKgzMzLco_LIqru9w&callback=initMap&libraries=&v=weekly" async>
+    </script>
+</body>
+</html>
